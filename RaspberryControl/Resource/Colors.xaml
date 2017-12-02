@@ -1,0 +1,14 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RaspberryControl">
+
+    <Color x:Key="Background">#ECF0F1</Color>
+    <Color x:Key="BackgroundDarker">#D8D8D8</Color>
+    <Color x:Key="BackgroundDarkest">#959595</Color>
+    <Color x:Key="NavyBlue">#2C3E50</Color>
+    <Color x:Key="Red">#C2234B</Color>
+    <Color x:Key="Blue">#3498DB</Color>
+    <Color x:Key="DarkerBlue">#2980B9</Color>
+    
+</ResourceDictionary>
