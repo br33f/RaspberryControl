@@ -96,6 +96,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\ProgressUInt32Converter.cs" />
     <Compile Include="Converter\DeviceStatusImageConverter.cs" />
     <Compile Include="Converter\DeviceStatusIconConverter.cs" />
     <Compile Include="Model\BaseModel.cs" />

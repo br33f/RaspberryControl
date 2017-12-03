@@ -27,19 +27,42 @@ namespace RaspberryControl.ViewModel
             }
         }
 
-        public float Brightness
+        public bool IsWhite
         {
-            get { return (float)(Model.Brightness * 100) / UInt32.MaxValue; }
-            set
-            {
-                UInt32 valueToSet = (UInt32)((value / 100) * UInt32.MaxValue);
-                Model.Brightness = valueToSet;
-            }
+            get { return !IsColor; }
+        }
+
+        public bool IsColor
+        {
+            get { return Model.IsColor; }
+            set { Model.IsColor = value; }
+        }
+
+        public UInt32 Brightness
+        {
+            get { return Model.Brightness; }
+            set { Model.Brightness = value; }
+        }
+
+        public UInt32 ColorTemperature
+        {
+            get { return Model.ColorTemperature; }
+            set { Model.ColorTemperature = value; }
+        }
+
+        public UInt32 Hue
+        {
+            get { return Model.Hue; }
+            set { Model.Hue = value; }
         }
 
         protected void OnModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             OnPropertyChanged(e.PropertyName);
+            if (e.PropertyName.Equals("IsColor"))
+            {
+                OnPropertyChanged("IsWhite");
+            }
         }
     }
 }

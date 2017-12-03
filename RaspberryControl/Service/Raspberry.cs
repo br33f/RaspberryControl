@@ -121,6 +121,33 @@ namespace RaspberryControl.Service
             SendRequest(request);
         }
 
+        public void SetColorTemperature(UInt32 colorTemperature)
+        {
+            Request request = new Request();
+            request.command = "SetColorTemperature";
+            request.parameters = new Hashtable();
+            request.parameters.Add("colorTemperature", colorTemperature);
+            SendRequest(request);
+        }
+
+        public void SetHue(UInt32 hue)
+        {
+            Request request = new Request();
+            request.command = "SetHue";
+            request.parameters = new Hashtable();
+            request.parameters.Add("hue", hue);
+            SendRequest(request);
+        }
+
+        public void SetIsColor(bool isColor)
+        {
+            Request request = new Request();
+            request.command = "SetIsColor";
+            request.parameters = new Hashtable();
+            request.parameters.Add("isColor", isColor);
+            SendRequest(request);
+        }
+
         private void ProcessRequest(Request request)
         {
             BaseSocketUpdatedModel reqModel = null;
