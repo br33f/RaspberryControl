@@ -12,13 +12,14 @@
     mc:Ignorable="d" Height="750">
 
     <Page.Resources>
+        <Converter:ActiveTextConverter x:Key="ActiveTextConverter"/>
+        <Converter:BrushConverter x:Key="BrushConverter"/>
         <Converter:ProgressUInt32Converter x:Key="ProgressUInt32Converter"/>
     </Page.Resources>
 
     <Grid Background="{StaticResource BackgroundBrush}" >
         <TextBlock x:Name="AppTitle" HorizontalAlignment="Left" Margin="55,44,0,0" Foreground="{StaticResource AppHeadingBrush}" TextWrapping="Wrap" Text="RaspberryControl" VerticalAlignment="Top" FontSize="{ThemeResource AppTitleFontSize}" FontFamily="{ThemeResource ThinFont}" />
         <TextBlock x:Name="ScreenTitle" HorizontalAlignment="Left" Margin="55,107,0,0" Foreground="{StaticResource ScreenHeadingBrush}" TextWrapping="Wrap" Text="Panel sterowania" VerticalAlignment="Top" FontSize="{ThemeResource ScreenTitleFontSize}" FontFamily="{ThemeResource ThinFont}" />
-        <Rectangle Fill="{StaticResource ScreenHeadingBrush}" Height="2" Margin="55,141,55,607"/>
         <View:DeviceStatus x:Name="DeviceStatusObj" HorizontalAlignment="Left" Margin="55,153,0,0" VerticalAlignment="Top">
             <View:DeviceStatus.DataContext>
                 <ViewModel:DeviceStatusViewModel/>
@@ -47,41 +48,73 @@
             </StackPanel>
         </Grid>
         <Grid x:Name="MotorObj" Background="{StaticResource ButtonBrush}" Margin="524,346,532,27">
-            <TextBlock Text="&#xF039;" FontFamily="{StaticResource FontAwesome}" Foreground="{StaticResource LabelBrush}" FontSize="50" Margin="87,6,88,34" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <TextBlock Text="Rolety" FontFamily="{StaticResource ThinFont}" FontSize="20" Margin="10,61,10,5" VerticalAlignment="Top"  HorizontalAlignment="Center" />
-            <Rectangle Fill="{StaticResource ScreenHeadingBrush}" Height="2" Margin="10,92,10,283" Stroke="{StaticResource LabelBrush}"/>
-            <StackPanel Orientation="Vertical" Margin="0,94,0,0">
-                <TextBlock HorizontalAlignment="Center" Margin="84,0">
-                    <Run Text="Roleta A"/>
-                </TextBlock>
-                <StackPanel Orientation="Horizontal" Margin="10, 0, 0, 5">
-                    <TextBlock Text="&#xF0AA;" FontFamily="{StaticResource FontAwesome}" Foreground="{StaticResource LabelBrush}" FontSize="50" />
-                    <TextBlock VerticalAlignment="Center" Margin="10, 0, 0, 0" FontSize="20">
-                        <Run Text="Podnieś"/>
-                    </TextBlock>
+            <Grid x:Name="MotorAObj">
+                <Grid.DataContext>
+                    <ViewModel:MotorViewModel />
+                </Grid.DataContext>
+                <TextBlock Text="&#xF039;" FontFamily="{StaticResource FontAwesome}" Foreground="{StaticResource LabelBrush}" FontSize="50" Margin="87,6,88,34" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                <TextBlock Text="Rolety" FontFamily="{StaticResource ThinFont}" FontSize="20" Margin="10,61,10,5" VerticalAlignment="Top"  HorizontalAlignment="Center" />
+                <Rectangle Fill="{StaticResource ScreenHeadingBrush}" Height="2" Margin="10,92,10,283" Stroke="{StaticResource LabelBrush}"/>
+                <StackPanel Orientation="Vertical" Margin="0,94,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center"  Margin="0,0,30,0">
+                            <TextBlock Text="Roleta A" FontSize="18" />
+                            <TextBlock Text="Status: " Foreground="{StaticResource BackgroundDarkestBrush}" />
+                            <TextBlock Text="{Binding IsActive, Converter={StaticResource ActiveTextConverter}}" Foreground="{Binding IsActive, Converter={StaticResource BrushConverter}}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <Button Click="{x:Bind MotorAVM.btnUp_Click}">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <TextBlock x:Name="motorAUp" Text="&#xF0AA;" FontFamily="{StaticResource FontAwesome}" Foreground="{Binding IsMovingUp, Converter={StaticResource BrushConverter}}" FontSize="50" />
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button Click="{x:Bind MotorAVM.btnDown_Click}">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <TextBlock x:Name="motorADown" Text="&#xF0AB;" FontFamily="{StaticResource FontAwesome}" Foreground="{Binding IsMovingDown, Converter={StaticResource BrushConverter}}" FontSize="50" />
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="10, 5, 0, 0">
-                    <TextBlock Text="&#xF0AB;" FontFamily="{StaticResource FontAwesome}" Foreground="{StaticResource LabelBrush}" FontSize="50" />
-                    <TextBlock VerticalAlignment="Center" Margin="10, 0, 0, 0" FontSize="20">
-                        <Run Text="Opuść"/>
-                    </TextBlock>
+            </Grid>
+            <Rectangle Fill="{StaticResource ScreenHeadingBrush}" Height="2" Margin="10,228,10,283" Stroke="{StaticResource LabelBrush}"/>
+            <Grid x:Name="MotorBObj">
+                <Grid.DataContext>
+                    <ViewModel:MotorViewModel />
+                </Grid.DataContext>
+                <TextBlock Text="&#xF039;" FontFamily="{StaticResource FontAwesome}" Foreground="{StaticResource LabelBrush}" FontSize="50" Margin="87,6,88,34" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                <TextBlock Text="Rolety" FontFamily="{StaticResource ThinFont}" FontSize="20" Margin="10,61,10,5" VerticalAlignment="Top"  HorizontalAlignment="Center" />
+                <Rectangle Fill="{StaticResource ScreenHeadingBrush}" Height="2" Margin="10,92,10,283" Stroke="{StaticResource LabelBrush}"/>
+                <StackPanel Orientation="Vertical" Margin="0,235,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center"  Margin="0,0,30,0">
+                            <TextBlock Text="Roleta B" FontSize="18" />
+                            <TextBlock Text="Status: " Foreground="{StaticResource BackgroundDarkestBrush}" />
+                            <TextBlock Text="{Binding IsActive, Converter={StaticResource ActiveTextConverter}}" Foreground="{Binding IsActive, Converter={StaticResource BrushConverter}}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <Button Click="{x:Bind MotorBVM.btnUp_Click}">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <TextBlock x:Name="motorBUp" Text="&#xF0AA;" FontFamily="{StaticResource FontAwesome}" Foreground="{Binding IsMovingUp, Converter={StaticResource BrushConverter}}" FontSize="50" />
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button Click="{x:Bind MotorBVM.btnDown_Click}">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <TextBlock x:Name="motorBDown" Text="&#xF0AB;" FontFamily="{StaticResource FontAwesome}" Foreground="{Binding IsMovingDown, Converter={StaticResource BrushConverter}}" FontSize="50" />
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
-                <TextBlock HorizontalAlignment="Center">
-                    <Run Text="Roleta B"/>
-                </TextBlock>
-                <StackPanel Orientation="Horizontal" Margin="10, 5, 0, 5">
-                    <TextBlock Text="&#xF0AA;" FontFamily="{StaticResource FontAwesome}" Foreground="{StaticResource LabelBrush}" FontSize="50" />
-                    <TextBlock VerticalAlignment="Center" Margin="10, 0, 0, 0" FontSize="20">
-                        <Run Text="Podnieś"/>
-                    </TextBlock>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="10, 5, 0, 0">
-                    <TextBlock Text="&#xF0AB;" FontFamily="{StaticResource FontAwesome}" Foreground="{StaticResource LabelBrush}" FontSize="50" />
-                    <TextBlock VerticalAlignment="Center" Margin="10, 0, 0, 0" FontSize="20">
-                        <Run Text="Opuść"/>
-                    </TextBlock>
-                </StackPanel>
-            </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

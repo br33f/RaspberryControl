@@ -96,16 +96,21 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\ActiveTextConverter.cs" />
     <Compile Include="Converter\ProgressUInt32Converter.cs" />
     <Compile Include="Converter\DeviceStatusImageConverter.cs" />
-    <Compile Include="Converter\DeviceStatusIconConverter.cs" />
+    <Compile Include="Converter\BrushConverter.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BaseSocketUpdatedModel.cs" />
     <Compile Include="Model\DeviceStatusModel.cs" />
+    <Compile Include="Model\MotorModel.cs" />
     <Compile Include="Model\LightbulbModel.cs" />
+    <Compile Include="Service\Lightbulb.cs" />
+    <Compile Include="Service\Motor.cs" />
     <Compile Include="Service\Raspberry.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\DeviceStatusViewModel.cs" />
+    <Compile Include="ViewModel\MotorViewModel.cs" />
     <Compile Include="ViewModel\LightbulbViewModel.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media;
 
 namespace RaspberryControl.Converter
 {
-    class DeviceStatusIconConverter : IValueConverter
+    class BrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

@@ -20,6 +20,10 @@ namespace RaspberryControl.Service
 
         private static Raspberry _Instance;
 
+        // Child services
+        public Service.Lightbulb LightbulbService { get; set; }
+        public Service.Motor MotorService { get; set; }
+
         // Input Socket
         private StreamSocket InputSocket;
         private StreamReader InputStreamReader;
@@ -48,12 +52,19 @@ namespace RaspberryControl.Service
             this.LightbulbVM = lightbulbVM;
 
             this.InitializeSockets();
+            this.InitializeChildServices();
         }
 
         private void InitializeSockets()
         {
             this.InitializeOutputSocket();
             this.InitializeInputSocket();
+        }
+
+        private void InitializeChildServices()
+        {
+            this.LightbulbService = new Service.Lightbulb(this);
+            this.MotorService = new Service.Motor(this);
         }
 
         private async void InitializeOutputSocket()
@@ -88,64 +99,12 @@ namespace RaspberryControl.Service
             }
         }
 
-        private void SendRequest(Request request)
+        public void SendRequest(Request request)
         {
             string serializedRequest = JsonConvert.SerializeObject(request);
 
             this.OutputStreamWriter.WriteLine(Utils.Base64Encode(serializedRequest));
             this.OutputStreamWriter.Flush();
-        }
-
-        public void TurnLightOn()
-        {
-            Request request = new Request();
-            request.command = "TurnLightOn";
-            request.parameters = new Hashtable();
-            SendRequest(request);
-        }
-
-        public void TurnLightOff()
-        {
-            Request request = new Request();
-            request.command = "TurnLightOff";
-            request.parameters = new Hashtable();
-            SendRequest(request);
-        }
-
-        public void SetBrightness(UInt32 brightnessValue)
-        {
-            Request request = new Request();
-            request.command = "SetBrightness";
-            request.parameters = new Hashtable();
-            request.parameters.Add("brightness", brightnessValue);
-            SendRequest(request);
-        }
-
-        public void SetColorTemperature(UInt32 colorTemperature)
-        {
-            Request request = new Request();
-            request.command = "SetColorTemperature";
-            request.parameters = new Hashtable();
-            request.parameters.Add("colorTemperature", colorTemperature);
-            SendRequest(request);
-        }
-
-        public void SetHue(UInt32 hue)
-        {
-            Request request = new Request();
-            request.command = "SetHue";
-            request.parameters = new Hashtable();
-            request.parameters.Add("hue", hue);
-            SendRequest(request);
-        }
-
-        public void SetIsColor(bool isColor)
-        {
-            Request request = new Request();
-            request.command = "SetIsColor";
-            request.parameters = new Hashtable();
-            request.parameters.Add("isColor", isColor);
-            SendRequest(request);
         }
 
         private void ProcessRequest(Request request)

@@ -24,9 +24,9 @@ namespace RaspberryControl.Model
                 if (!object.Equals(_IsOnOff, value))
                 {
                     if (value)
-                        Service.Raspberry.Instance.TurnLightOn();
+                        Service.Raspberry.Instance.LightbulbService.TurnLightOn();
                     else
-                        Service.Raspberry.Instance.TurnLightOff();
+                        Service.Raspberry.Instance.LightbulbService.TurnLightOff();
                     
                     _IsOnOff = value;
                     OnPropertyChanged("IsOnOff");
@@ -41,7 +41,7 @@ namespace RaspberryControl.Model
             {
                 if (!object.Equals(_IsColor, value))
                 {
-                    Service.Raspberry.Instance.SetIsColor(value);
+                    Service.Raspberry.Instance.LightbulbService.SetIsColor(value);
 
                     _IsColor = value;
                     OnPropertyChanged("IsColor");
@@ -56,7 +56,7 @@ namespace RaspberryControl.Model
             {
                 if (!object.Equals(_Brightness, value))
                 {
-                    Service.Raspberry.Instance.SetBrightness(value);
+                    Service.Raspberry.Instance.LightbulbService.SetBrightness(value);
                     _Brightness = value;
                     OnPropertyChanged("Brightness");
                 }
@@ -70,7 +70,7 @@ namespace RaspberryControl.Model
             {
                 if (!object.Equals(_ColorTemperature, value))
                 {
-                    Service.Raspberry.Instance.SetColorTemperature(value);
+                    Service.Raspberry.Instance.LightbulbService.SetColorTemperature(value);
                     _ColorTemperature = value;
                     OnPropertyChanged("ColorTemperature");
                 }
@@ -84,7 +84,7 @@ namespace RaspberryControl.Model
             {
                 if (!object.Equals(_Hue, value))
                 {
-                    Service.Raspberry.Instance.SetHue(value);
+                    Service.Raspberry.Instance.LightbulbService.SetHue(value);
                     _Hue = value;
                     OnPropertyChanged("Hue");
                 }

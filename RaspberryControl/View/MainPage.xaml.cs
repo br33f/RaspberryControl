@@ -30,6 +30,8 @@ namespace RaspberryControl
 
         public DeviceStatusViewModel DeviceStatusVM { get; set; }
         public LightbulbViewModel LightbulbVM { get; set; }
+        public MotorViewModel MotorAVM { get; set; }
+        public MotorViewModel MotorBVM { get; set; }
 
         public MainPage()
         {
@@ -38,6 +40,7 @@ namespace RaspberryControl
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
             this.GetViewModels();
+            this.InitializeViewModels();
             this.InitializeServices();
         }
 
@@ -45,6 +48,14 @@ namespace RaspberryControl
         {
             this.DeviceStatusVM = DeviceStatusObj.DataContext as DeviceStatusViewModel;
             this.LightbulbVM = LightbulbObj.DataContext as LightbulbViewModel;
+            this.MotorAVM = MotorAObj.DataContext as MotorViewModel;
+            this.MotorBVM = MotorBObj.DataContext as MotorViewModel;
+        }
+
+        private void InitializeViewModels()
+        {
+            this.MotorAVM.initializeMotorModel("A");
+            this.MotorBVM.initializeMotorModel("B");
         }
 
         private void InitializeServices()

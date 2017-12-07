@@ -13,7 +13,7 @@
 
     <UserControl.Resources>
         <Converter:DeviceStatusImageConverter x:Key="DeviceStatusImageConverter"/>
-        <Converter:DeviceStatusIconConverter x:Key="DeviceStatusIconConverter"/>
+        <Converter:BrushConverter x:Key="DeviceStatusIconConverter"/>
     </UserControl.Resources>
 
     <Grid Name="DeviceStatusContainer">

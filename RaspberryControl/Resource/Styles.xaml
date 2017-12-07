@@ -17,6 +17,10 @@
 
     <SolidColorBrush x:Key="LabelBrush" Color="{StaticResource BackgroundDarkest}"></SolidColorBrush>
 
+    <SolidColorBrush x:Key="RedBrush" Color="{StaticResource Red}"></SolidColorBrush>
+    <SolidColorBrush x:Key="BackgroundDarkerBrush" Color="{StaticResource BackgroundDarker}"></SolidColorBrush>
+    <SolidColorBrush x:Key="BackgroundDarkestBrush" Color="{StaticResource BackgroundDarkest}"></SolidColorBrush>
+    
     <FontFamily x:Key="ThinFont">Segoe UI Light</FontFamily>
     <FontFamily x:Key="FontAwesome">/Assets/Fonts/fontawesome-webfont.ttf#FontAwesome</FontFamily>
 
