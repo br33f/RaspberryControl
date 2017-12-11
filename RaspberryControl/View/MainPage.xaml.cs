@@ -27,16 +27,19 @@ namespace RaspberryControl
         public const string INPUT_SOCK_PORT = "8725";
 
         public Service.Raspberry RaspberryService { get; set; }
+        public Service.Kinect KinectService { get; set; }
 
         public DeviceStatusViewModel DeviceStatusVM { get; set; }
         public LightbulbViewModel LightbulbVM { get; set; }
         public MotorViewModel MotorAVM { get; set; }
         public MotorViewModel MotorBVM { get; set; }
+        public KinectViewModel KinectVM { get; set; }
+        public TemperatureSensorViewModel TemperatureSensorVM { get; set; }
 
         public MainPage()
         {
             this.InitializeComponent();
-            ApplicationView.PreferredLaunchViewSize = new Size(1280, 720);
+            ApplicationView.PreferredLaunchViewSize = new Size(1280, 820);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
             this.GetViewModels();
@@ -50,6 +53,8 @@ namespace RaspberryControl
             this.LightbulbVM = LightbulbObj.DataContext as LightbulbViewModel;
             this.MotorAVM = MotorAObj.DataContext as MotorViewModel;
             this.MotorBVM = MotorBObj.DataContext as MotorViewModel;
+            this.KinectVM = KinectObj.DataContext as KinectViewModel;
+            this.TemperatureSensorVM = MiscObj.DataContext as TemperatureSensorViewModel;
         }
 
         private void InitializeViewModels()
@@ -60,8 +65,11 @@ namespace RaspberryControl
 
         private void InitializeServices()
         {
-            Service.Raspberry.Create(this.DeviceStatusVM, this.LightbulbVM);
+            Service.Raspberry.Create(this.DeviceStatusVM, this.LightbulbVM, this.TemperatureSensorVM);
             this.RaspberryService = Service.Raspberry.Instance;
+
+            Service.Kinect.Create(this.DeviceStatusVM, this.LightbulbVM, this.MotorAVM, this.MotorBVM, this.KinectVM);
+            this.KinectService = Service.Kinect.Instance;
         }
     }
 }

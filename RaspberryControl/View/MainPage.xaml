@@ -116,5 +116,35 @@
                 </StackPanel>
             </Grid>
         </Grid>
+        <Grid x:Name="KinectObj" Background="{StaticResource ButtonBrush}" Margin="707,121,0,0" Height="175" Width="466">
+            <Grid.DataContext>
+                <ViewModel:KinectViewModel />
+            </Grid.DataContext>
+            <Image Stretch="None" NineGrid="0" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Source="ms-appx:///Assets/Icons/kinect.png"/>
+            <TextBlock Text="Kontroler Kinect" FontFamily="{StaticResource ThinFont}" FontSize="20" Margin="10,61,10,5" VerticalAlignment="Top"  HorizontalAlignment="Center" />
+            <Rectangle Fill="{StaticResource ScreenHeadingBrush}" Height="2" Margin="0,90,0,83" Stroke="{StaticResource LabelBrush}"/>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" Width="445" Margin="10, 100, 0, 0"  Grid.Row="1">
+                <TextBlock Text="Ostatnio odebrany rozkaz:"/>
+                <TextBox Margin="0, 10, 0, 0" Text="{Binding LastCommand, Mode=OneWay}" IsReadOnly="True" x:Name="tbKinectLastReceived"/>
+            </StackPanel>
+        </Grid>
+        <Grid x:Name="MiscObj" Background="{StaticResource ButtonBrush}" Margin="707,505,0,0" Height="190" Width="466">
+            <Grid.DataContext>
+                <ViewModel:TemperatureSensorViewModel />
+            </Grid.DataContext>
+            <TextBlock Text="&#xF069;" FontFamily="{StaticResource FontAwesome}" Foreground="{StaticResource LabelBrush}" FontSize="50" Margin="87,6,88,34" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <TextBlock Text="Pozostałe odczyty" FontFamily="{StaticResource ThinFont}" FontSize="20" Margin="10,61,10,5" VerticalAlignment="Top"  HorizontalAlignment="Center" />
+            <Rectangle Fill="{StaticResource ScreenHeadingBrush}" Height="2" Margin="0,98,0,90" Stroke="{StaticResource LabelBrush}"/>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Width="445" Margin="10, 110, 0, 0"  Grid.Row="1">
+                <StackPanel Orientation="Vertical" Width="200">
+                    <TextBlock Text="Temperatura powietrza" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{Binding Temperature}" FontSize="36" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Width="200" HorizontalAlignment="Right" Margin="46,0,0,0">
+                    <TextBlock Text="Wilgotność powietrza"/>
+                    <TextBlock Text="{Binding Humidity}" FontSize="36" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

@@ -17,6 +17,7 @@ namespace RaspberryControl.Model
         private bool _IsKinectEnabled = false;
         private bool _IsMotorEnabled = false;
         private bool _IsLedEnabled = false;
+        private bool _IsTemperatureSensorEnabled = false;
 
         public bool IsTcpEnabled {
             get { return _IsTcpEnabled; }
@@ -81,6 +82,21 @@ namespace RaspberryControl.Model
                 }
             }
         }
+
+        public bool IsTemperatureSensorEnabled
+        {
+            get { return _IsTemperatureSensorEnabled; }
+            set
+            {
+                if (!object.Equals(_IsTemperatureSensorEnabled, value))
+                {
+                    _IsTemperatureSensorEnabled = value;
+                    OnPropertyChanged("IsTemperatureSensorEnabled");
+                }
+            }
+        }
+
+        
 
         public override void HandleSocketUpdate(Request request)
         {

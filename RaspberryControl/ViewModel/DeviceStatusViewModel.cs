@@ -65,6 +65,14 @@ namespace RaspberryControl.ViewModel
             }
         }
 
+        public bool AreOtherReadingsEnabled
+        {
+            get
+            {
+                return IsLedEnabled && IsTemperatureSensorEnabled;
+            }
+        }
+
         public bool IsLedEnabled
         {
             get
@@ -77,9 +85,25 @@ namespace RaspberryControl.ViewModel
             }
         }
 
+        public bool IsTemperatureSensorEnabled
+        {
+            get
+            {
+                return Model.IsTemperatureSensorEnabled;
+            }
+            set
+            {
+                Model.IsTemperatureSensorEnabled = value;
+            }
+        }
+
         protected void OnModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             OnPropertyChanged(e.PropertyName);
+            if (e.PropertyName == "IsTemperatureSensorEnabled" || e.PropertyName == "IsLedEnabled")
+            {
+                OnPropertyChanged("AreOtherReadingsEnabled");
+            }
         }
     }
 }

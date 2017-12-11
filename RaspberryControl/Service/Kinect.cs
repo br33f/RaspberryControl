@@ -13,74 +13,55 @@ using Windows.Networking.Sockets;
 
 namespace RaspberryControl.Service
 {
-    public class Raspberry
+    public class Kinect
     {
-        public const string INPUT_SOCK_PORT = "8725";
-        public const string OUTPUT_SOCK_PORT = "8724";
+        public const string INPUT_SOCK_PORT = "8726";
 
-        private static Raspberry _Instance;
-
-        // Child services
-        public Service.Lightbulb LightbulbService { get; set; }
-        public Service.Motor MotorService { get; set; }
+        private static Kinect _Instance;
 
         // Input Socket
         private StreamSocket InputSocket;
         private StreamReader InputStreamReader;
 
-        // Output Socket
-        private StreamSocket OutputSocket;
-        private StreamWriter OutputStreamWriter;
 
         // ViewModels
         private DeviceStatusViewModel DeviceStatusVM { get; set; }
         private LightbulbViewModel LightbulbVM { get; set; }
-        private TemperatureSensorViewModel TemperatureSensorVM { get; set; }
+        private MotorViewModel MotorAVM { get; set; }
+        private MotorViewModel MotorBVM { get; set; }
+        private KinectViewModel KinectVM { get; set; }
 
-        public static void Create(DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, TemperatureSensorViewModel temperatureSensorVM)
+        public static void Create(DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, MotorViewModel motorAVM, MotorViewModel motorBVM, KinectViewModel kinectVM)
         {
-            _Instance = new Raspberry(deviceStatusVM, lightbulbVM, temperatureSensorVM);
+            _Instance = new Kinect(deviceStatusVM, lightbulbVM, motorAVM, motorBVM, kinectVM);
         }
 
-        public static Raspberry Instance
+        public static Kinect Instance
         {
             get { return _Instance; }
         }
         
-        private Raspberry(DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, TemperatureSensorViewModel temperatureSensorVM)
+        private Kinect(DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, MotorViewModel motorAVM, MotorViewModel motorBVM, KinectViewModel kinectVM)
         {
             this.DeviceStatusVM = deviceStatusVM;
             this.LightbulbVM = lightbulbVM;
-            this.TemperatureSensorVM = temperatureSensorVM;
+            this.MotorAVM = motorAVM;
+            this.MotorBVM = motorBVM;
+            this.KinectVM = kinectVM;
 
             this.InitializeSockets();
-            this.InitializeChildServices();
         }
 
         private void InitializeSockets()
         {
-            this.InitializeOutputSocket();
             this.InitializeInputSocket();
         }
-
-        private void InitializeChildServices()
-        {
-            this.LightbulbService = new Service.Lightbulb(this);
-            this.MotorService = new Service.Motor(this);
-        }
-
-        private async void InitializeOutputSocket()
-        {
-            this.OutputSocket = new StreamSocket();
-            await this.OutputSocket.ConnectAsync(new HostName("192.168.0.22"), OUTPUT_SOCK_PORT);
-
-            this.OutputStreamWriter = new StreamWriter(this.OutputSocket.OutputStream.AsStreamForWrite());
-        }
+     
 
         private async void InitializeInputSocket()
         {
             this.InputSocket = new StreamSocket();
-            await this.InputSocket.ConnectAsync(new HostName("192.168.0.22"), INPUT_SOCK_PORT);
+            await this.InputSocket.ConnectAsync(new HostName("192.168.0.20"), INPUT_SOCK_PORT);
 
             this.InputStreamReader = new StreamReader(this.InputSocket.InputStream.AsStreamForRead());
 
@@ -101,38 +82,52 @@ namespace RaspberryControl.Service
             }
         }
 
-        public void SendRequest(Request request)
-        {
-            string serializedRequest = JsonConvert.SerializeObject(request);
-
-            this.OutputStreamWriter.WriteLine(Utils.Base64Encode(serializedRequest));
-            this.OutputStreamWriter.Flush();
-        }
-
         private void ProcessRequest(Request request)
         {
             BaseSocketUpdatedModel reqModel = null;
 
             switch (request.command)
             {
+                case "Ping":
+                    break;
                 case "ServiceIsUp":
                     reqModel = DeviceStatusVM.Model;
                     break;
                 case "ServiceIsDown":
                     reqModel = DeviceStatusVM.Model;
                     break;
-                case "LightbulbUpdate":
-                    reqModel = LightbulbVM.Model;
+                case "PullRight":
+                    string direction = request.parameters["direction"] as string;
+                    HandleMove(MotorAVM.Model, direction);
+                    string lastCommand = "Prawa ręka - pociągnięcię w ";
+                    lastCommand += (direction.Equals("up")) ? "górę" : "dół";
+                    KinectVM.LastCommand = lastCommand;
                     break;
-                case "TemperatureSensorUpdate":
-                    reqModel = TemperatureSensorVM.Model;
+                case "Cross":
+                    LightbulbVM.Model.IsOnOff = !LightbulbVM.Model.IsOnOff;
+                    KinectVM.LastCommand = "Skrzyżowanie rąk";
                     break;
                 default:
                     Utils.LogLine("InputStream ProcessRequest: Nie rozpoznano komendy:" + request.command);
                     break;
             }
 
-            reqModel.HandleSocketUpdate(request);
+            if (reqModel != null)
+            {
+                reqModel.HandleSocketUpdate(request);
+            }
+        }
+
+        private void HandleMove(MotorModel motor, string direction)
+        {
+            if (direction == "up")
+            {
+                motor.IsMovingUp = !motor.IsMovingUp;
+            }
+            else
+            {
+                motor.IsMovingDown = !motor.IsMovingDown;
+            }
         }
     }
 }

@@ -27,10 +27,16 @@ namespace RaspberryControl.Model
             {
                 if (!object.Equals(_IsMovingUp, value))
                 {
+
                     if (value)
+                    {
+                        IsMovingDown = false;
                         Service.Raspberry.Instance.MotorService.SpinLeft(this._MotorName);
+                    }
                     else
+                    {
                         Service.Raspberry.Instance.MotorService.Stop(this._MotorName);
+                    }
 
                     _IsMovingUp = value;
                     OnPropertyChanged("IsMovingUp");
@@ -46,10 +52,14 @@ namespace RaspberryControl.Model
                 if (!object.Equals(_IsMovingDown, value))
                 {
                     if (value)
+                    {
+                        IsMovingUp = false;
                         Service.Raspberry.Instance.MotorService.SpinRight(this._MotorName);
+                    }
                     else
+                    {
                         Service.Raspberry.Instance.MotorService.Stop(this._MotorName);
-
+                    }
 
                     _IsMovingDown = value;
                     OnPropertyChanged("IsMovingDown");

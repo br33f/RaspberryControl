@@ -46,8 +46,8 @@
                     <TextBlock Text="Rolety" FontFamily="{StaticResource ThinFont}" Foreground="{Binding IsMotorEnabled, Converter={StaticResource DeviceStatusIconConverter}}" FontSize="20" Margin="0,61,0,5" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Grid>
                 <Grid Grid.Column="4" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource ButtonBrush}" >
-                    <TextBlock Text="&#xF069;" FontFamily="{StaticResource FontAwesome}" Foreground="{Binding IsLedEnabled, Converter={StaticResource DeviceStatusIconConverter}}" FontSize="50" Margin="87,6,88,34" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <TextBlock Text="LED" FontFamily="{StaticResource ThinFont}" Foreground="{Binding IsLedEnabled, Converter={StaticResource DeviceStatusIconConverter}}" FontSize="20" Margin="10,61,10,5" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <TextBlock Text="&#xF069;" FontFamily="{StaticResource FontAwesome}" Foreground="{Binding AreOtherReadingsEnabled, Converter={StaticResource DeviceStatusIconConverter}}" FontSize="50" Margin="87,6,88,34" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Text="Pozostałe odczyty" FontFamily="{StaticResource ThinFont}" Foreground="{Binding AreOtherReadingsEnabled, Converter={StaticResource DeviceStatusIconConverter}}" FontSize="20" Margin="10,61,10,5" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Grid>
         </Grid>
     </Grid>
