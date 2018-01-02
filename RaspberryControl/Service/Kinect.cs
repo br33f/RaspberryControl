@@ -97,15 +97,43 @@ namespace RaspberryControl.Service
                     reqModel = DeviceStatusVM.Model;
                     break;
                 case "PullRight":
-                    string direction = request.parameters["direction"] as string;
-                    HandleMove(MotorAVM.Model, direction);
-                    string lastCommand = "Prawa ręka - pociągnięcię w ";
-                    lastCommand += (direction.Equals("up")) ? "górę" : "dół";
-                    KinectVM.LastCommand = lastCommand;
+                    string directionRight = request.parameters["direction"] as string;
+                    HandleMove(MotorAVM.Model, directionRight);
+                    string lastCommandRight = "Prawa ręka - pociągnięcię w ";
+                    lastCommandRight += (directionRight.Equals("up")) ? "górę" : "dół";
+                    KinectVM.LastCommand = lastCommandRight;
+                    break;
+                case "PullLeft":
+                    string directionLeft = request.parameters["direction"] as string;
+                    HandleMove(MotorBVM.Model, directionLeft);
+                    string lastCommandLeft = "Lewa ręka - pociągnięcię w ";
+                    lastCommandLeft += (directionLeft.Equals("up")) ? "górę" : "dół";
+                    KinectVM.LastCommand = lastCommandLeft;
+                    break;
+                case "PullCancel":
+                    HandleMoveCancel(MotorAVM.Model);
+                    HandleMoveCancel(MotorBVM.Model);
                     break;
                 case "Cross":
                     LightbulbVM.Model.IsOnOff = !LightbulbVM.Model.IsOnOff;
                     KinectVM.LastCommand = "Skrzyżowanie rąk";
+                    break;
+                case "ChangeBrightness":
+                    double changeBy = (double) request.parameters["changeBy"];
+                    UInt32 changeByVal = UInt32.MaxValue / (UInt32)(1.0d / Math.Abs(changeBy));
+                    UInt32 newValue;
+                    if (changeBy > 0)
+                    {
+                        newValue = LightbulbVM.Brightness + changeByVal;
+                        if (newValue < LightbulbVM.Brightness) newValue = UInt32.MaxValue;                    }
+                    else
+                    {
+                        newValue = LightbulbVM.Brightness - changeByVal;
+                        if (newValue > LightbulbVM.Brightness) newValue = UInt32.MinValue;
+                    }
+                    LightbulbVM.Brightness = newValue;
+
+                    KinectVM.LastCommand = "Przesunięcie prawą ręką";
                     break;
                 default:
                     Utils.LogLine("InputStream ProcessRequest: Nie rozpoznano komendy:" + request.command);
@@ -128,6 +156,12 @@ namespace RaspberryControl.Service
             {
                 motor.IsMovingDown = !motor.IsMovingDown;
             }
+        }
+
+        private void HandleMoveCancel(MotorModel motor)
+        {
+            motor.IsMovingUp = false;
+            motor.IsMovingDown = false;
         }
     }
 }

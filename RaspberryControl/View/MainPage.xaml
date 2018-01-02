@@ -122,6 +122,13 @@
             </Grid.DataContext>
             <Image Stretch="None" NineGrid="0" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Source="ms-appx:///Assets/Icons/kinect.png"/>
             <TextBlock Text="Kontroler Kinect" FontFamily="{StaticResource ThinFont}" FontSize="20" Margin="10,61,10,5" VerticalAlignment="Top"  HorizontalAlignment="Center" />
+            <Button VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,20,20,0" Foreground="{StaticResource BackgroundDarkestBrush}">
+                <Button.Template>
+                    <ControlTemplate>
+                        <TextBlock x:Name="kinectSettings" Text="&#xF013;" FontFamily="{StaticResource FontAwesome}" FontSize="25" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
             <Rectangle Fill="{StaticResource ScreenHeadingBrush}" Height="2" Margin="0,90,0,83" Stroke="{StaticResource LabelBrush}"/>
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" Width="445" Margin="10, 100, 0, 0"  Grid.Row="1">
                 <TextBlock Text="Ostatnio odebrany rozkaz:"/>
