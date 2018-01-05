@@ -18,6 +18,8 @@ namespace RaspberryControl.Service
         public const string INPUT_SOCK_PORT = "8725";
         public const string OUTPUT_SOCK_PORT = "8724";
 
+        public string Address { get; set; }
+
         private static Raspberry _Instance;
 
         // Child services
@@ -37,9 +39,9 @@ namespace RaspberryControl.Service
         private LightbulbViewModel LightbulbVM { get; set; }
         private TemperatureSensorViewModel TemperatureSensorVM { get; set; }
 
-        public static void Create(DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, TemperatureSensorViewModel temperatureSensorVM)
+        public static void Create(string raspberryAddress, DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, TemperatureSensorViewModel temperatureSensorVM)
         {
-            _Instance = new Raspberry(deviceStatusVM, lightbulbVM, temperatureSensorVM);
+            _Instance = new Raspberry(raspberryAddress, deviceStatusVM, lightbulbVM, temperatureSensorVM);
         }
 
         public static Raspberry Instance
@@ -47,8 +49,10 @@ namespace RaspberryControl.Service
             get { return _Instance; }
         }
         
-        private Raspberry(DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, TemperatureSensorViewModel temperatureSensorVM)
+        private Raspberry(string address, DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, TemperatureSensorViewModel temperatureSensorVM)
         {
+            this.Address = address;
+
             this.DeviceStatusVM = deviceStatusVM;
             this.LightbulbVM = lightbulbVM;
             this.TemperatureSensorVM = temperatureSensorVM;
@@ -72,7 +76,7 @@ namespace RaspberryControl.Service
         private async void InitializeOutputSocket()
         {
             this.OutputSocket = new StreamSocket();
-            await this.OutputSocket.ConnectAsync(new HostName("192.168.0.22"), OUTPUT_SOCK_PORT);
+            await this.OutputSocket.ConnectAsync(new HostName(Address), OUTPUT_SOCK_PORT);
 
             this.OutputStreamWriter = new StreamWriter(this.OutputSocket.OutputStream.AsStreamForWrite());
         }
@@ -80,7 +84,7 @@ namespace RaspberryControl.Service
         private async void InitializeInputSocket()
         {
             this.InputSocket = new StreamSocket();
-            await this.InputSocket.ConnectAsync(new HostName("192.168.0.22"), INPUT_SOCK_PORT);
+            await this.InputSocket.ConnectAsync(new HostName(Address), INPUT_SOCK_PORT);
 
             this.InputStreamReader = new StreamReader(this.InputSocket.InputStream.AsStreamForRead());
 

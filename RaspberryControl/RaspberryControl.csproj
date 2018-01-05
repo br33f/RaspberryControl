@@ -125,6 +125,9 @@
     <Compile Include="View\DeviceStatus.xaml.cs">
       <DependentUpon>DeviceStatus.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\NetworkConfig.xaml.cs">
+      <DependentUpon>NetworkConfig.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -164,6 +167,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\DeviceStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NetworkConfig.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

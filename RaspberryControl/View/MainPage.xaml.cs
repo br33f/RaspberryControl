@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RaspberryControl.View;
 using RaspberryControl.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,8 @@ namespace RaspberryControl
 
             this.GetViewModels();
             this.InitializeViewModels();
-            this.InitializeServices();
+
+            Loaded += MainPage_Loaded;
         }
 
         private void GetViewModels()
@@ -63,12 +65,19 @@ namespace RaspberryControl
             this.MotorBVM.initializeMotorModel("B");
         }
 
-        private void InitializeServices()
+        private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            Service.Raspberry.Create(this.DeviceStatusVM, this.LightbulbVM, this.TemperatureSensorVM);
+            var networkConfigDialog = new NetworkConfig();
+            var result = await networkConfigDialog.ShowAsync();
+            InitializeServices(networkConfigDialog.RaspberryAddress, networkConfigDialog.KinectAddress);
+        }
+
+        private void InitializeServices(string raspberryAddress, string kinectAddress)
+        {
+            Service.Raspberry.Create(raspberryAddress, this.DeviceStatusVM, this.LightbulbVM, this.TemperatureSensorVM);
             this.RaspberryService = Service.Raspberry.Instance;
 
-            Service.Kinect.Create(this.DeviceStatusVM, this.LightbulbVM, this.MotorAVM, this.MotorBVM, this.KinectVM);
+            Service.Kinect.Create(kinectAddress, this.DeviceStatusVM, this.LightbulbVM, this.MotorAVM, this.MotorBVM, this.KinectVM);
             this.KinectService = Service.Kinect.Instance;
         }
     }

@@ -17,6 +17,8 @@ namespace RaspberryControl.Service
     {
         public const string INPUT_SOCK_PORT = "8726";
 
+        public string Address { get; set; }
+
         private static Kinect _Instance;
 
         // Input Socket
@@ -31,9 +33,9 @@ namespace RaspberryControl.Service
         private MotorViewModel MotorBVM { get; set; }
         private KinectViewModel KinectVM { get; set; }
 
-        public static void Create(DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, MotorViewModel motorAVM, MotorViewModel motorBVM, KinectViewModel kinectVM)
+        public static void Create(string kinectAddress, DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, MotorViewModel motorAVM, MotorViewModel motorBVM, KinectViewModel kinectVM)
         {
-            _Instance = new Kinect(deviceStatusVM, lightbulbVM, motorAVM, motorBVM, kinectVM);
+            _Instance = new Kinect(kinectAddress, deviceStatusVM, lightbulbVM, motorAVM, motorBVM, kinectVM);
         }
 
         public static Kinect Instance
@@ -41,8 +43,10 @@ namespace RaspberryControl.Service
             get { return _Instance; }
         }
         
-        private Kinect(DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, MotorViewModel motorAVM, MotorViewModel motorBVM, KinectViewModel kinectVM)
+        private Kinect(string address, DeviceStatusViewModel deviceStatusVM, LightbulbViewModel lightbulbVM, MotorViewModel motorAVM, MotorViewModel motorBVM, KinectViewModel kinectVM)
         {
+            this.Address = address;
+
             this.DeviceStatusVM = deviceStatusVM;
             this.LightbulbVM = lightbulbVM;
             this.MotorAVM = motorAVM;
@@ -61,7 +65,7 @@ namespace RaspberryControl.Service
         private async void InitializeInputSocket()
         {
             this.InputSocket = new StreamSocket();
-            await this.InputSocket.ConnectAsync(new HostName("192.168.0.20"), INPUT_SOCK_PORT);
+            await this.InputSocket.ConnectAsync(new HostName(Address), INPUT_SOCK_PORT);
 
             this.InputStreamReader = new StreamReader(this.InputSocket.InputStream.AsStreamForRead());
 

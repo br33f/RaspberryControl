@@ -1,0 +1,20 @@
+﻿<ContentDialog
+    x:Class="RaspberryControl.View.NetworkConfig"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RaspberryControl.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Konfiguracja sieci"
+    PrimaryButtonText="Zatwierdź"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    DataContext="{Binding Mode=TwoWay, RelativeSource={RelativeSource Self}}"
+>
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="Adres IP RaspberryService" />
+        <TextBox Text="{Binding Path=RaspberryAddress, Mode=TwoWay}" />
+        <TextBlock Text="Adres IP KinectService" />
+        <TextBox Text="{Binding Path=KinectAddress, Mode=TwoWay}" />
+    </StackPanel>
+</ContentDialog>
